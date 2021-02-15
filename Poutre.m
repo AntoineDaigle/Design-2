@@ -39,8 +39,13 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%Tentative pété de faire de quoi de mon coté
 n = 100;
 x = linspace(0, 1, 20);
-%%%%%%%%%%%%%%%%%%%%%%%%%%%Fin de ma tentative pété
 
+for i=1:n
+    plot(x, 3*x+1)
+    axis([-5 5 -5 5])
+    pause(1)
+end
+%%%%%%%%%%%%%%%%%%%%%%%%%%%Fin de ma tentative pété
 
 
 
