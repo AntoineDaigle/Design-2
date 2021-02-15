@@ -23,17 +23,23 @@
 % end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Fin du code à charlé
 
-n = 50;
-XY = 10 * rand(2,n) - 5;
-for i=1:n
-    plot(XY(1,i),XY(2,i), "or")
-    axis([-20 20 -20 20])
-    pause(.1)
-end
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Code sur les internets qui va pas pire
+% n = 50;
+% XY = 10 * rand(2,n) - 5;
+% for i=1:n
+%     plot(XY(1,i),XY(2,i), "or")
+%     axis([-20 20 -20 20])
+%     pause(.1)
+% end
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Fin du code sur les internets
 
 %%HELLO TRUC DE PRO! SI TU SOUHAITES METTRE UN BLOC EN COMMENTAIRE,
 %%SÉLECTIONNE LE PIS CLIQUE-DROIT ET CLIQUE SUR COMMENT OU SUR UNCOMMENT
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%Tentative pété de faire de quoi de mon coté
+n = 100;
+x = linspace(0, 1, 20);
+%%%%%%%%%%%%%%%%%%%%%%%%%%%Fin de ma tentative pété
 
 
 
