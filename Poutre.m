@@ -50,8 +50,8 @@ coeff3 = -mu_simu^2;
 
 %Let's plot the figure
 h = plot(x, 1000*w_init, x, 1000*w_new)
-xlabel("gros laid")
-ylabel("Allo")
+xlabel("X [m]")
+ylabel("Déflexion [mm]")
 ylim([-1.2,1.2])
 grid on
 
