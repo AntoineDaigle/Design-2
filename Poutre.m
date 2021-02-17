@@ -1,50 +1,103 @@
-% %Posons les constantes nécessaires
-% longueur = 0.3;
-% largeur = 0.05;
-% epaisseur = 0.001;
-% Young = 2.7*10^11;
-% load = -2;
-% poid = -0.1;
-% 
-% I = (1/12) * epaisseur^3 * largeur;
-% a = longueur/2;
+close all 
+clear all
+clc
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Section est le code a charlé
-% x = linspace(0, 1, 100);
-% y = linspace(0, 1, 100); 
-% %Boucle générant le graph
-% for count=1:length(y)
-%     y(count) = count*count*(1.5*count)/3000000; %J'ai uncune caliss d'idée de l'utilité de cette fonction
-% end
-% for count=0:200 %Nombre d'itération
-%     plot(x, y-y*cos(count/10)*exp(-count/100))
-%     axis([0 1 -1 1])
-%     pause(0.1) %Pause de 0.01 par frame
-% end
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Fin du code à charlé
+b = 73e-3;
+h = 1.65e-3;
+L = 240e-3;
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Code sur les internets qui va pas pire
-% n = 50;
-% XY = 10 * rand(2,n) - 5;
-% for i=1:n
-%     plot(XY(1,i),XY(2,i), "or")
-%     axis([-20 20 -20 20])
-%     pause(.1)
-% end
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Fin du code sur les internets
+J = b*h^3/12;
 
-%%HELLO TRUC DE PRO! SI TU SOUHAITES METTRE UN BLOC EN COMMENTAIRE,
-%%SÉLECTIONNE LE PIS CLIQUE-DROIT ET CLIQUE SUR COMMENT OU SUR UNCOMMENT
+E = 2.7e9; %Notre module: 2.7e9
+dens = 1937.18;
+mu = dens*b*h;
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%Tentative pété de faire de quoi de mon coté
-n = 100;
-x = linspace(0, 1, 20);
+dt = 6e-5;
 
-for i=1:n
-    plot(x, 3*x+1)
-    axis([-5 5 -5 5])
-    pause(1)
+nx = 20; %Nombre d'éléments spaciaux
+nt = 5000;
+
+dx = L/(nx-1); %Pour la résolution du graph?
+x = -dx:dx:L+dx; %Matrice d'éléments spaciaux
+nx = nx + 2; %Nombre d'élément (+2 pour ajuster avec le dx de droit pis de gauche)
+
+dx_n = dx/L; % Normalise that shit
+
+kappa = sqrt(E*J/(mu*L^4)); %Chunk
+
+mu_simu = kappa*dt/dx_n^2;
+
+if(mu_simu > 0.5)
+    warning("La simulation ne sera pas stable")
 end
+
+f1 = 1.875^2*kappa/(2*pi); %Dans un ti-power-point slides 34
+
+
+%Conditions initales
+temps = 0;
+w = 1 * fliplr(0.001*sin(pi*x/(2*L))-0.001);
+w_old = w; %Un pas dans le passé
+w_new = zeros(1, nx);
+w_init = w; %Préservation de la condition initiale
+
+masse_bout = zeros(1, nt+1); %Vecteur qui contient la position de la lame en fonction du temps
+
+%Param pour speedy gonzalez 
+coeff1 = (2 - 6*mu_simu^2);
+coeff2 = (4*mu_simu^2);
+coeff3 = -mu_simu^2;
+
+%Let's plot the figure
+h = plot(x, 1000*w_init, x, 1000*w_new)
+xlabel("gros laid")
+ylabel("Allo")
+ylim([-1.2,1.2])
+grid on
+
+for n=0:nt
+    
+    w_new = zeros(1, nx);
+    i = 3:nx-2;
+    w_new(i) = coeff1*w(i) + coeff2*(w(i+1)+w(i-1))+coeff3*(w(i+2)+w(i-2))-w_old(i);
+    
+    %condi limit
+    w_new(1:2) = 0;
+    w_new(end-1) = 2*w_new(end-2)-w_new(end-3);
+    w_new(end) =2*w_new(end-1)-w_new(end-2);
+    
+    %Prep next turn
+    
+    w_old = w;
+    w = w_new;
+    
+    masse_bout(n+1) = w(end);
+    
+    set(h(2), "Ydata", 1000*w_new);
+    drawnow
+end
+    
+plot((0:dt:(nt*dt)), masse_bout)
+grid
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%Fin de ma tentative pété
 
 
