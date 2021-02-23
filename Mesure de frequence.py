@@ -5,7 +5,12 @@ from scipy.signal import find_peaks
 from scipy.signal import butter
 from scipy.signal import sosfilt
 import pandas as pd
+"""Script permetant de lire l'oscillation de la lame en fonction du temps. Ajout d'un Curve_fit avec scipy pour obtenir le coefficient d'amortissement.
 
+Returns:
+    int: Coefficient d'amortissement 
+    matplotlib : Graphique  de l'oscillation de la lame en fonction du temps
+"""
 
 
 # position = r"Test capteur de position\Prise de mesure 1\F0001CH1.CSV"
