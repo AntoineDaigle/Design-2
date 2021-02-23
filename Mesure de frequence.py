@@ -44,6 +44,9 @@ freq = 1/(Temps_peak[1]-Temps_peak[0])
 
 print("La fréquence d'oscillation fondamentale est de {} Hz".format(freq))
 
+freq_temps = [Temps_peak[0], Temps_peak[1]]
+freq_tensi = [Tension_peak[0], Tension_peak[1]]
+
 
 def func(Temps_peak, a, b, d):
     return a * np.exp(-b/Temps_peak) + d
@@ -54,6 +57,7 @@ print("Les paramètres sont calculés, l'ammortissement est de: {}".format(param
 
 plt.plot(df["Temps"], df["Tension"], label="Données brutes")
 plt.plot(Temps_peak, Tension_peak, label="Sommet")
+plt.scatter(freq_temps, freq_tensi, color="red", label=r"Sommet utilisé pour $\omega_0$")
 plt.plot(Temps_peak, func(Temps_peak, *param), label="Curve_fit")
 plt.legend()
 plt.xlabel("Temps")
