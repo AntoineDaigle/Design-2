@@ -13,8 +13,8 @@ Returns:
 """
 
 
-# position = r"Test capteur de position\Prise de mesure 1\F0001CH1.CSV"
-position = r"Test capteur de position\Prise de mesure 2\F0002CH1.CSV"
+position = r"Test capteur de position\Prise de mesure 1\F0001CH1.CSV"
+# position = r"Test capteur de position\Prise de mesure 2\F0002CH1.CSV"
 df = pd.read_csv(position, index_col=False)
 
 # Pour voir la forme du CSV:
@@ -30,7 +30,6 @@ Peak = find_peaks(df["Tension"], distance=50)
 Temps_peak = []
 Tension_peak = []
 
-
 for i in Peak[0]:
     Temps_peak.append(df["Temps"][i])
     Tension_peak.append(df["Tension"][i])
@@ -40,6 +39,10 @@ index = Tension_peak.index(max(Tension_peak))
 
 Temps_peak = Temps_peak[index:]
 Tension_peak = Tension_peak[index:]
+
+freq = 1/(Temps_peak[1]-Temps_peak[0])
+
+print("La fréquence d'oscillation fondamentale est de {} Hz".format(freq))
 
 
 def func(Temps_peak, a, b, d):
