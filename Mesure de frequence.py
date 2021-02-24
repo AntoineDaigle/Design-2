@@ -40,9 +40,26 @@ index = Tension_peak.index(max(Tension_peak))
 Temps_peak = Temps_peak[index:]
 Tension_peak = Tension_peak[index:]
 
-freq = 1/(Temps_peak[1]-Temps_peak[0])
 
-print("La fréquence d'oscillation fondamentale est de {} Hz".format(freq))
+def frequence_osci(Temps, num_peak):
+    """Déterminer la fréquence d'oscillation de la lame.
+
+    Args:
+        Temps (lst): Liste du temps ou les sommets sont situé
+        num_peak (int): Nombre de peak souhaité
+
+    Returns:
+        int: Moyenne de la fréquence d'oscillation calculé avec les sommets.
+    """
+    temps = Temps[0:num_peak]
+    w_0 = []
+
+    for i in range(num_peak):
+        if i == num_peak - 1:
+            return "La fréquence d'oscillation est de: {} Hz".format(np.mean(w_0))
+            
+        else:
+            w_0.append(1/(temps[i+1] - temps[i]))
 
 freq_temps = [Temps_peak[0], Temps_peak[1]]
 freq_tensi = [Tension_peak[0], Tension_peak[1]]
@@ -60,7 +77,10 @@ plt.plot(Temps_peak, Tension_peak, label="Sommet")
 plt.scatter(freq_temps, freq_tensi, color="red", label=r"Sommet utilisé pour $\omega_0$")
 plt.plot(Temps_peak, func(Temps_peak, *param), label="Curve_fit")
 plt.legend()
-plt.xlabel("Temps")
-plt.ylabel("Signal")
+plt.xlabel("Temps [s]")
+plt.ylabel("Signal [V]")
+
+
+print(frequence_osci(Temps_peak, 8))
 plt.show()
 
