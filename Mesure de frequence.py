@@ -127,6 +127,7 @@ for _ in nb_de_set:
     # plt.savefig("Oscillation de la lame", dpi=600)    # Pour sauvegarder la figure, don't uncomment this fucking line if you don't want to save 3489 figures
     # plt.show()
 
+
 Document.write("-- Resultat du traitement des donnees --\n\n")
 
 Document.write("La frequence d'oscillation pour les differentes simulations:\n")
@@ -141,3 +142,4 @@ Document.write("Le coefficient d'ammortissement moyen est le suivant: {}.\n".for
 Document.write("L'ecart-type du coefficient d'ammortissement est de: {}.".format(np.std(ammor)))
 Document.close()
 print("SCRIPT COMPLÉTÉ")
+
