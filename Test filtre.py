@@ -7,7 +7,7 @@ from scipy.signal import sosfilt
 import pandas as pd
 
 
-position = r"Test capteur de position\Prise de mesure 1\F0001CH1.CSV"
+position = r"Test capteur de position\Prise de mesure 2\F0002CH1.CSV"
 df = pd.read_csv(position, index_col=False)
 
 
@@ -65,3 +65,14 @@ plt.plot(new_dataframe["Temps"], func(new_dataframe["Temps"], *param), label="es
 plt.plot(new_dataframe["Temps"], Données_filtrées, label="Données filtrées")
 plt.legend()
 plt.show()
+
+# New test!
+# from scipy.signal import savgol_filter
+
+# filtered_val = savgol_filter([new_dataframe["Don"]], 9, 4)
+# print(len(filtered_val[0]))
+# plt.plot(list(range(0, len(filtered_val[0]))), filtered_val[0], label="Savgol_filter")
+# plt.plot(list(range(0, len(filtered_val[0]))), new_dataframe["Tension"], label="True")
+# plt.plot(list(range(0, len(filtered_val[0]))), Données_filtrées, label="Données filtrées")
+# plt.legend()
+# plt.show()
