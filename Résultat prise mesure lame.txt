@@ -2,16 +2,14 @@
 
 La frequence d'oscillation pour les differentes simulations:
     Test 1: 11.289830383393554 Hz
-    Test 2: 11.82233576612812 Hz
 
 
 Le coefficient d'ammortissement pour les differentes simulations:
     Test 1: 0.2793398924756272 
-    Test 2: 0.00014748680594414495 
 
 
-La frequence d'oscillation moyenne est de: 11.556083074760837 Hz.
-L'ecart-type de la frequence d'oscillation est de: 0.26625269136728313 Hz.
+La frequence d'oscillation moyenne est de: 11.289830383393554 Hz.
+L'ecart-type de la frequence d'oscillation est de: 0.0 Hz.
 
-Le coefficient d'ammortissement moyen est le suivant: 0.13974368964078565.
-L'ecart-type du coefficient d'ammortissement est de: 0.1395962028348415.
+Le coefficient d'ammortissement moyen est le suivant: 0.2793398924756272.
+L'ecart-type du coefficient d'ammortissement est de: 0.0.

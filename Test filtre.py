@@ -41,11 +41,24 @@ Données_filtrées = new_dataframe["Tension"] - func_sin(new_dataframe["Temps"],
 def func(Temps_peak, a, b, d):
     return a * np.exp(-b/Temps_peak) + d
 
-param, param_cova = curve_fit(func, new_dataframe["Temps"], Données_filtrées, maxfev=5000)
 
 
+#Maintenant trouve peak pour les données filtrées
 
 
+new_dataframe["Don"] = list(Données_filtrées)
+peak_fil = find_peaks(new_dataframe["Don"], distance=50)
+
+new_ten= []
+new_tem = []
+
+for i in peak_fil[0]:
+    new_ten.append(new_dataframe.iloc[i]["Don"])
+    new_tem.append(new_dataframe.iloc[i]["Temps"])
+
+param, param_cova = curve_fit(func, new_tem, new_ten, maxfev=5000)
+
+plt.plot(new_tem, new_ten, label="yes")
 plt.plot(df["Temps"], df["Tension"], label="Données brutes")
 plt.plot(new_dataframe["Temps"], func_sin(new_dataframe["Temps"], *parame), label="Sinus")
 plt.plot(new_dataframe["Temps"], func(new_dataframe["Temps"], *param), label="est")
