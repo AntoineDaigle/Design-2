@@ -130,7 +130,7 @@ for _ in nb_de_set:
     ax1.set(ylabel='Signal [V]')
     ax2.set(ylabel="Signal [V]", xlabel="Temps [s]")
     # plt.savefig("Oscillation de la lame", dpi=600)    # Pour sauvegarder la figure, don't uncomment this fucking line if you don't want to save 3489 figures
-    plt.show()
+    # plt.show()
 
 
 Document.write("-- Resultat du traitement des donnees --\n\n")
