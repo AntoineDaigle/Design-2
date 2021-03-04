@@ -2,8 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.optimize import curve_fit
 from scipy.signal import find_peaks
-from scipy.signal import butter
-from scipy.signal import sosfilt
+from scipy.signal import savgol_filter
 import pandas as pd
 import os
 
