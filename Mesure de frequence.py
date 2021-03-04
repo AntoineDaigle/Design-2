@@ -31,22 +31,20 @@ for _ in nb_de_set:
 
     position = r"Test capteur de position\Prise de mesure {}\F000{}CH1.CSV".format(_, _)
     df = pd.read_csv(position, index_col=False)
-    plt.plot(df["Temps"], df["Tension"], label="Données brutes")
 
     # print(df.head())  # Pour voir la forme du CSV:
 
 
-
-    ##################### Tentative de filtre
-    # sos = butter(5, 4) #aquisition en milliseconde
-    # filtered = sosfilt(sos, df["Tension"])
-
-
-
-
-
-
     ################## Sommets des données
+
+    # Peak = find_peaks(df["Tension"], distance=50)
+
+    # Temps_peak = []
+    # Tension_peak = []
+
+    # for i in Peak[0]:
+    #     Temps_peak.append(df["Temps"][i])
+    #     Tension_peak.append(df["Tension"][i])
 
     Peak = find_peaks(df["Tension"], distance=50)
 
@@ -57,31 +55,52 @@ for _ in nb_de_set:
         Temps_peak.append(df["Temps"][i])
         Tension_peak.append(df["Tension"][i])
 
-
-
-
-
-
-
-
-    ################## Curve_fit
-
     index = Tension_peak.index(max(Tension_peak))
 
     Temps_peak = Temps_peak[index:]
     Tension_peak = Tension_peak[index:]
 
+    new_dataframe = df.iloc[Peak[0][index]:Peak[0][-1]]
+
+    def func_sin(x, a, b, c, d):
+        return a * np.sin(b*x + c) + d
+
+    parame, parame_co = curve_fit(func_sin, new_dataframe["Temps"][-250:], new_dataframe["Tension"][-250:])
+
+    Données_filtrées = new_dataframe["Tension"] - func_sin(new_dataframe["Temps"], *parame)
+
+    new_dataframe["Don"] = list(Données_filtrées)
+    peak_fil = find_peaks(new_dataframe["Don"], distance=50)
+
+    new_ten= []
+    new_tem = []
+
+    for i in peak_fil[0]:
+        new_ten.append(new_dataframe.iloc[i]["Don"])
+        new_tem.append(new_dataframe.iloc[i]["Temps"])
+
+
+
+    ################## Curve_fit
+
+    # index = Tension_peak.index(max(Tension_peak))
+
+    # Temps_peak = Temps_peak[index:]
+    # Tension_peak = Tension_peak[index:]
+
     def func(Temps_peak, a, b, d):
         return a * np.exp(-b/Temps_peak) + d
 
-    param, param_cova = curve_fit(func, Temps_peak, Tension_peak, maxfev=5000)
-    # print("Les paramètres sont calculés, l'ammortissement est de: {}".format(param[1])) # Uncomment for result
+    param, param_cova = curve_fit(func, new_tem, new_ten, maxfev=5000)
+
+    # param, param_cova = curve_fit(func, Temps_peak, Tension_peak, maxfev=5000)
+    # # print("Les paramètres sont calculés, l'ammortissement est de: {}".format(param[1])) # Uncomment for result
     ammor.append(param[1])
 
-    plt.plot(Temps_peak, func(Temps_peak, *param), label="Curve_fit")
-    plt.plot(Temps_peak, Tension_peak, label="Sommet")
+    # plt.plot(Temps_peak, func(Temps_peak, *param), label="Curve_fit")
+    # plt.plot(Temps_peak, Tension_peak, label="Sommet")
 
-
+    
 
 
     ##################### Section calcul de la fréquence d'oscillation
@@ -109,23 +128,32 @@ for _ in nb_de_set:
 
     Nombre_sommets = 8  # Sélectionne le nombre de sommet pour le calcul
 
-    freq_temps = Temps_peak[:Nombre_sommets]
-    freq_tensi = Tension_peak[:Nombre_sommets]
-    print(frequence_osci(Temps_peak, Nombre_sommets))
-    plt.scatter(freq_temps, freq_tensi, color="red", label=r"Sommets utilisés pour $\omega_0$")
+    # freq_temps = Temps_peak[:Nombre_sommets]
+    # freq_tensi = Tension_peak[:Nombre_sommets]
+    # print(frequence_osci(Temps_peak, Nombre_sommets))
+    # plt.scatter(freq_temps, freq_tensi, color="red", label=r"Sommets utilisés pour $\omega_0$")
 
+    freq_temps = new_tem[:Nombre_sommets]
+    freq_tensi = new_ten[:Nombre_sommets]
+    print(frequence_osci(new_tem, Nombre_sommets))
+    
 
 
 
 
     ###################### Génération du graphique
-
+    fig, (ax1, ax2) = plt.subplots(2)
+    plt.suptitle("Données brutes et traitement des données de l'essai: {}".format(_))
+    ax1.plot(df["Temps"], df["Tension"], label="Données brutes")
+    ax2.plot(new_tem, new_ten, label="Sommets")
+    ax2.plot(new_dataframe["Temps"], func(new_dataframe["Temps"], *param), label="Curve_fit")
+    ax2.plot(new_dataframe["Temps"], new_dataframe["Don"], label="Données filtrées")
+    ax2.scatter(freq_temps, freq_tensi, color="red", label=r"Sommets utilisés pour $\omega_0$")
     plt.legend()
-    plt.xlabel("Temps [s]")
-    plt.ylabel("Signal [V]")
-    plt.title("Set de données de l'essai: {}".format(_))
+    ax1.set(ylabel='Signal [V]')
+    ax2.set(ylabel="Signal [V]", xlabel="Temps [s]")
     # plt.savefig("Oscillation de la lame", dpi=600)    # Pour sauvegarder la figure, don't uncomment this fucking line if you don't want to save 3489 figures
-    # plt.show()
+    plt.show()
 
 
 Document.write("-- Resultat du traitement des donnees --\n\n")
