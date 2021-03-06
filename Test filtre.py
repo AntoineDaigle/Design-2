@@ -65,3 +65,10 @@ plt.plot(new_dataframe["Temps"], func(new_dataframe["Temps"], *param), label="es
 plt.plot(new_dataframe["Temps"], Données_filtrées, label="Données filtrées")
 plt.legend()
 plt.show()
+
+###################
+from scipy.signal import savgol_filter
+plt.plot(new_dataframe["Temps"], Données_filtrées, label="Données filtrées")
+plt.plot(new_dataframe["Temps"], savgol_filter(Données_filtrées, 25, 3, mode="nearest"), label="savgol filter")
+plt.legend()
+plt.show()
