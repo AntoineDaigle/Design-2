@@ -132,8 +132,19 @@ for _ in nb_de_set:
     ax2.set(ylabel="Signal [V]")
     ax3.set(ylabel="Signal [V]", xlabel="Temps [s]")
     # plt.savefig("Oscillation de la lame", dpi=600)    # Pour sauvegarder la figure, don't uncomment this fucking line if you don't want to save 3489 figures
-    # plt.show()
+    plt.show()
 
+fig, (ax1, ax2) = plt.subplots(2)
+plt.suptitle("Résultat des simulations")
+ax1.scatter(range(len(ammor)), ammor, label="Data")
+ax1.axhline(np.mean(ammor), c="r", linestyle="--", label="moyenne")
+ax1.set(ylabel="Coeff d'ammort")
+ax2.scatter(range(len(freqosci)), freqosci, label="Data")
+ax2.axhline(np.mean(freqosci), c="r", linestyle="--", label="moyenne")
+ax2.set(ylabel="Fréquence [Hz]", xlabel="Numéro de l'essai")
+ax1.legend()
+ax2.legend()
+plt.show()
 
 Document.write("-- Resultat du traitement des donnees --\n\n")
 
