@@ -21,7 +21,7 @@ else:
 
 
 
-nb_de_set = [-2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]  # Set de données à traiter
+nb_de_set = [-2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]  # Set de données à traiter
 Document = open("Résultat prise mesure lame.txt", "x")
 
 ammor = []
@@ -30,8 +30,12 @@ freqosci = []
 for _ in nb_de_set:
 #################### Chercher le fichier
 
-    position = r"Test capteur de position\Prise de mesure {}\F000{}CH1.CSV".format(_, _)
-    df = pd.read_csv(position, index_col=False)
+    if _ >= 10:
+        position = r"Test capteur de position\Prise de mesure {}\F00{}CH1.CSV".format(_, _)
+        df = pd.read_csv(position, index_col=False)
+    else: 
+        position = r"Test capteur de position\Prise de mesure {}\F000{}CH1.CSV".format(_, _)
+        df = pd.read_csv(position, index_col=False)
 
 
     ################## Sommets des données
@@ -53,15 +57,7 @@ for _ in nb_de_set:
 
     new_dataframe = df.iloc[Peak[0][index]:Peak[0][-1]]
 
-    # def func_sin(x, a, b, c, d):
-    #     return a * np.sin(b*x + c) + d
 
-    # parame, parame_co = curve_fit(func_sin, new_dataframe["Temps"][-250:], new_dataframe["Tension"][-250:])
-
-    # Données_filtrées = new_dataframe["Tension"] - func_sin(new_dataframe["Temps"], *parame)
-
-    # new_dataframe["Don"] = list(Données_filtrées)
-    # peak_fil = find_peaks(new_dataframe["Don"], distance=50)
     peak_fil = find_peaks(new_dataframe["Tension"], distance=50)
 
     # J'ai maintenant un nouveau data frame que je vais traiter
@@ -70,7 +66,6 @@ for _ in nb_de_set:
     new_tem = []
 
     for i in peak_fil[0]:
-        # new_ten.append(new_dataframe.iloc[i]["Don"])
         new_ten.append(new_dataframe.iloc[i]["Tension"])
         new_tem.append(new_dataframe.iloc[i]["Temps"])
 
@@ -120,29 +115,29 @@ for _ in nb_de_set:
 
 
     ###################### Génération du graphique
-    fig, (ax1, ax2, ax3) = plt.subplots(3)
-    plt.suptitle("Données brutes et traitement des données de l'essai: {}".format(_))
-    ax1.plot(df["Temps"], df["Tension"], label="Données brutes")
-    ax3.plot(new_tem, new_ten, label="Sommets")
-    ax3.plot(new_dataframe["Temps"], func(new_dataframe["Temps"], *param), label="Curve_fit")
-    ax3.scatter(freq_temps, freq_tensi, color="red", label=r"Sommets utilisés pour $\omega_0$")
-    # ax2.plot(new_dataframe["Temps"], savgol_filter(new_dataframe["Don"], 51, 2), label="Données filtrées")
-    ax2.plot(new_dataframe["Temps"], savgol_filter(new_dataframe["Tension"], 51, 2), label="Données filtrées")
-    ax1.legend()
-    ax2.legend()
-    ax3.legend()
-    ax1.set(ylabel='Signal [V]')
-    ax2.set(ylabel="Signal [V]")
-    ax3.set(ylabel="Signal [V]", xlabel="Temps [s]")
+    # fig, (ax1, ax2, ax3) = plt.subplots(3)
+    # plt.suptitle("Données brutes et traitement des données de l'essai: {}".format(_))
+    # ax1.plot(df["Temps"], df["Tension"], label="Données brutes")
+    # ax3.plot(new_tem, new_ten, label="Sommets")
+    # ax3.plot(new_dataframe["Temps"], func(new_dataframe["Temps"], *param), label="Curve_fit")
+    # ax3.scatter(freq_temps, freq_tensi, color="red", label=r"Sommets utilisés pour $\omega_0$")
+    # # ax2.plot(new_dataframe["Temps"], savgol_filter(new_dataframe["Don"], 51, 2), label="Données filtrées")
+    # ax2.plot(new_dataframe["Temps"], savgol_filter(new_dataframe["Tension"], 51, 2), label="Données filtrées")
+    # ax1.legend()
+    # ax2.legend()
+    # ax3.legend()
+    # ax1.set(ylabel='Signal [V]')
+    # ax2.set(ylabel="Signal [V]")
+    # ax3.set(ylabel="Signal [V]", xlabel="Temps [s]")
     # plt.savefig("Oscillation de la lame", dpi=600)    # Pour sauvegarder la figure, don't uncomment this fucking line if you don't want to save 3489 figures
-    plt.show()
+    # plt.show()
 
 fig, (ax1, ax2) = plt.subplots(2)
 plt.suptitle("Résultat des simulations")
-ax1.scatter(range(len(ammor)), ammor, label="Data")
+ax1.scatter(nb_de_set, ammor, label="Data")
 ax1.axhline(np.mean(ammor), c="r", linestyle="--", label="moyenne")
 ax1.set(ylabel="Coeff d'ammort")
-ax2.scatter(range(len(freqosci)), freqosci, label="Data")
+ax2.scatter(nb_de_set, freqosci, label="Data")
 ax2.axhline(np.mean(freqosci), c="r", linestyle="--", label="moyenne")
 ax2.set(ylabel="Fréquence [Hz]", xlabel="Numéro de l'essai")
 ax1.legend()
@@ -153,14 +148,14 @@ Document.write("-- Resultat du traitement des donnees --\n\n")
 
 Document.write("La frequence d'oscillation pour les differentes simulations:\n")
 for i in range(len(freqosci)):
-    Document.write("    Test {}: {} Hz\n".format(i + 1, freqosci[i]))
+    Document.write("\tTest {}: {} Hz\n".format(nb_de_set[i], round(freqosci[i], 4)))
 Document.write("\n\nLe coefficient d'ammortissement pour les differentes simulations:\n")
 for i in range(len(ammor)):
-    Document.write("    Test {}: {} \n".format(i + 1, ammor[i]))
-Document.write("\n\nLa frequence d'oscillation moyenne est de: {} Hz.\n".format(np.mean(freqosci)))
-Document.write("L'ecart-type de la frequence d'oscillation est de: {} Hz.\n\n".format(np.std(freqosci)))
-Document.write("Le coefficient d'ammortissement moyen est le suivant: {}.\n".format(np.mean(ammor)))
-Document.write("L'ecart-type du coefficient d'ammortissement est de: {}.".format(np.std(ammor)))
+    Document.write("\tTest {}: {} \n".format(nb_de_set[i], round(ammor[i], 6)))
+Document.write("\n\nLa frequence d'oscillation moyenne est de: {} Hz.\n".format(round(np.mean(freqosci), 4)))
+Document.write("L'ecart-type de la frequence d'oscillation est de: {} Hz.\n\n".format(round(np.std(freqosci), 4)))
+Document.write("Le coefficient d'ammortissement moyen est le suivant: {}.\n".format(round(np.mean(ammor), 4)))
+Document.write("L'ecart-type du coefficient d'ammortissement est de: {}.".format(round(np.std(ammor), 4)))
 Document.close()
 print("SCRIPT COMPLÉTÉ")
 
