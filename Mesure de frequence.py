@@ -21,7 +21,7 @@ else:
 
 
 
-nb_de_set = [1, 2]  # Set de données à traiter
+nb_de_set = [-2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]  # Set de données à traiter
 Document = open("Résultat prise mesure lame.txt", "x")
 
 ammor = []
@@ -53,15 +53,16 @@ for _ in nb_de_set:
 
     new_dataframe = df.iloc[Peak[0][index]:Peak[0][-1]]
 
-    def func_sin(x, a, b, c, d):
-        return a * np.sin(b*x + c) + d
+    # def func_sin(x, a, b, c, d):
+    #     return a * np.sin(b*x + c) + d
 
-    parame, parame_co = curve_fit(func_sin, new_dataframe["Temps"][-250:], new_dataframe["Tension"][-250:])
+    # parame, parame_co = curve_fit(func_sin, new_dataframe["Temps"][-250:], new_dataframe["Tension"][-250:])
 
-    Données_filtrées = new_dataframe["Tension"] - func_sin(new_dataframe["Temps"], *parame)
+    # Données_filtrées = new_dataframe["Tension"] - func_sin(new_dataframe["Temps"], *parame)
 
-    new_dataframe["Don"] = list(Données_filtrées)
-    peak_fil = find_peaks(new_dataframe["Don"], distance=50)
+    # new_dataframe["Don"] = list(Données_filtrées)
+    # peak_fil = find_peaks(new_dataframe["Don"], distance=50)
+    peak_fil = find_peaks(new_dataframe["Tension"], distance=50)
 
     # J'ai maintenant un nouveau data frame que je vais traiter
 
@@ -69,7 +70,8 @@ for _ in nb_de_set:
     new_tem = []
 
     for i in peak_fil[0]:
-        new_ten.append(new_dataframe.iloc[i]["Don"])
+        # new_ten.append(new_dataframe.iloc[i]["Don"])
+        new_ten.append(new_dataframe.iloc[i]["Tension"])
         new_tem.append(new_dataframe.iloc[i]["Temps"])
 
 
@@ -124,7 +126,8 @@ for _ in nb_de_set:
     ax3.plot(new_tem, new_ten, label="Sommets")
     ax3.plot(new_dataframe["Temps"], func(new_dataframe["Temps"], *param), label="Curve_fit")
     ax3.scatter(freq_temps, freq_tensi, color="red", label=r"Sommets utilisés pour $\omega_0$")
-    ax2.plot(new_dataframe["Temps"], savgol_filter(new_dataframe["Don"], 51, 2), label="Données filtrées")
+    # ax2.plot(new_dataframe["Temps"], savgol_filter(new_dataframe["Don"], 51, 2), label="Données filtrées")
+    ax2.plot(new_dataframe["Temps"], savgol_filter(new_dataframe["Tension"], 51, 2), label="Données filtrées")
     ax1.legend()
     ax2.legend()
     ax3.legend()
