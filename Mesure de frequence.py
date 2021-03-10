@@ -159,3 +159,4 @@ Document.write("L'ecart-type du coefficient d'ammortissement est de: {}.".format
 Document.close()
 print("SCRIPT COMPLÉTÉ")
 
+#allo modification
