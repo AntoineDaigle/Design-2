@@ -21,7 +21,7 @@ else:
 
 
 
-nb_de_set = [-2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]  # Set de données à traiter
+nb_de_set = [4, 5]  # Set de données à traiter
 Document = open("Résultat prise mesure lame.txt", "x")
 
 ammor = []
@@ -74,7 +74,7 @@ for _ in nb_de_set:
     ################## Curve_fit
 
     def func(Temps_peak, a, b, d):
-        return a * np.exp(-b/Temps_peak) + d
+        return a * np.exp(b/Temps_peak) + d
 
     param, param_cova = curve_fit(func, new_tem, new_ten, maxfev=5000)
 
@@ -115,22 +115,21 @@ for _ in nb_de_set:
 
 
     ###################### Génération du graphique
-    # fig, (ax1, ax2, ax3) = plt.subplots(3)
-    # plt.suptitle("Données brutes et traitement des données de l'essai: {}".format(_))
-    # ax1.plot(df["Temps"], df["Tension"], label="Données brutes")
-    # ax3.plot(new_tem, new_ten, label="Sommets")
-    # ax3.plot(new_dataframe["Temps"], func(new_dataframe["Temps"], *param), label="Curve_fit")
-    # ax3.scatter(freq_temps, freq_tensi, color="red", label=r"Sommets utilisés pour $\omega_0$")
-    # # ax2.plot(new_dataframe["Temps"], savgol_filter(new_dataframe["Don"], 51, 2), label="Données filtrées")
-    # ax2.plot(new_dataframe["Temps"], savgol_filter(new_dataframe["Tension"], 51, 2), label="Données filtrées")
-    # ax1.legend()
-    # ax2.legend()
-    # ax3.legend()
-    # ax1.set(ylabel='Signal [V]')
-    # ax2.set(ylabel="Signal [V]")
-    # ax3.set(ylabel="Signal [V]", xlabel="Temps [s]")
-    # # plt.savefig("Oscillation de la lame", dpi=600)    # Pour sauvegarder la figure, don't uncomment this fucking line if you don't want to save 3489 figures
-    # plt.show()
+    fig, (ax1, ax2, ax3) = plt.subplots(3)
+    plt.suptitle("Données brutes et traitement des données de l'essai: {}".format(_))
+    ax1.plot(df["Temps"], df["Tension"], label="Données brutes")
+    ax3.plot(new_tem, new_ten, label="Sommets")
+    ax3.plot(new_dataframe["Temps"], func(new_dataframe["Temps"], *param), label="Curve_fit")
+    ax3.scatter(freq_temps, freq_tensi, color="red", label=r"Sommets utilisés pour $\omega_0$")
+    ax2.plot(new_dataframe["Temps"], savgol_filter(new_dataframe["Tension"], 51, 2), label="Données filtrées")
+    ax1.legend()
+    ax2.legend()
+    ax3.legend()
+    ax1.set(ylabel='Signal [V]')
+    ax2.set(ylabel="Signal [V]")
+    ax3.set(ylabel="Signal [V]", xlabel="Temps [s]")
+    # plt.savefig("Oscillation de la lame", dpi=600)    # Pour sauvegarder la figure, don't uncomment this fucking line if you don't want to save 3489 figures
+    plt.show()
 
 fig, (ax1, ax2) = plt.subplots(2)
 plt.suptitle("Résultat des simulations")
@@ -154,9 +153,7 @@ for i in range(len(ammor)):
     Document.write("\tTest {}: {} \n".format(nb_de_set[i], round(ammor[i], 6)))
 Document.write("\n\nLa frequence d'oscillation moyenne est de: {} Hz.\n".format(round(np.mean(freqosci), 4)))
 Document.write("L'ecart-type de la frequence d'oscillation est de: {} Hz.\n\n".format(round(np.std(freqosci), 4)))
-Document.write("Le coefficient d'ammortissement moyen est le suivant: {}.\n".format(round(np.mean(ammor), 4)))
-Document.write("L'ecart-type du coefficient d'ammortissement est de: {}.".format(round(np.std(ammor), 4)))
+Document.write("Le coefficient d'ammortissement moyen est le suivant: {}.\n".format(np.mean(ammor)))
+Document.write("L'ecart-type du coefficient d'ammortissement est de: {}.".format(np.std(ammor)))
 Document.close()
 print("SCRIPT COMPLÉTÉ")
-
-#allo modification
