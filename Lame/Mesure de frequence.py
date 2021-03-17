@@ -21,7 +21,7 @@ else:
 
 
 
-nb_de_set = [4, 5]  # Set de données à traiter
+nb_de_set = [3, 4, 5, 6, 7, 8, 10]  # Set de données à traiter
 Document = open("Résultat prise mesure lame.txt", "x")
 
 ammor = []
@@ -73,8 +73,8 @@ for _ in nb_de_set:
 
     ################## Curve_fit
 
-    def func(Temps_peak, a, b, d):
-        return a * np.exp(b/Temps_peak) + d
+    def func(Temps_peak, a, b, c, d):
+        return a * np.exp(-b*Temps_peak * 0.5 + c) + d
 
     param, param_cova = curve_fit(func, new_tem, new_ten, maxfev=5000)
 
@@ -129,7 +129,7 @@ for _ in nb_de_set:
     ax2.set(ylabel="Signal [V]")
     ax3.set(ylabel="Signal [V]", xlabel="Temps [s]")
     # plt.savefig("Oscillation de la lame", dpi=600)    # Pour sauvegarder la figure, don't uncomment this fucking line if you don't want to save 3489 figures
-    plt.show()
+    # plt.show()
 
 fig, (ax1, ax2) = plt.subplots(2)
 plt.suptitle("Résultat des simulations")
@@ -141,7 +141,7 @@ ax2.axhline(np.mean(freqosci), c="r", linestyle="--", label="moyenne")
 ax2.set(ylabel="Fréquence [Hz]", xlabel="Numéro de l'essai")
 ax1.legend()
 ax2.legend()
-plt.show()
+# plt.show()
 
 Document.write("-- Resultat du traitement des donnees --\n\n")
 
