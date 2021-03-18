@@ -1,0 +1,27 @@
+-- Resultat du traitement des donnees --
+
+La frequence d'oscillation pour les differentes simulations:
+	Test 3: 11.8518 Hz
+	Test 4: 12.2544 Hz
+	Test 5: 12.3204 Hz
+	Test 6: 12.3327 Hz
+	Test 7: 12.4609 Hz
+	Test 8: 12.3216 Hz
+	Test 10: 11.6724 Hz
+
+
+Le coefficient d'ammortissement pour les differentes simulations:
+	Test 3: 5.449872 
+	Test 4: 5.261086 
+	Test 5: 5.596662 
+	Test 6: 5.668865 
+	Test 7: 6.661637 
+	Test 8: 6.191141 
+	Test 10: 6.528208 
+
+
+La frequence d'oscillation moyenne est de: 12.1735 Hz.
+L'ecart-type de la frequence d'oscillation est de: 0.2706 Hz.
+
+Le coefficient d'ammortissement moyen est le suivant: 5.908209912300427.
+L'ecart-type du coefficient d'ammortissement est de: 0.5092420899640363.
