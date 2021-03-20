@@ -73,8 +73,8 @@ for _ in nb_de_set:
 
     ################## Curve_fit
 
-    def func(Temps_peak, a, b, c, d):
-        return a * np.exp(-b*Temps_peak * 0.5 + c) + d
+    def func(Temps_peak, a, b, d):
+        return a * np.exp(-b*Temps_peak * 0.5) + d
 
     param, param_cova = curve_fit(func, new_tem, new_ten, maxfev=5000)
 
@@ -141,7 +141,7 @@ ax2.axhline(np.mean(freqosci), c="r", linestyle="--", label="moyenne")
 ax2.set(ylabel="Fréquence [Hz]", xlabel="Numéro de l'essai")
 ax1.legend()
 ax2.legend()
-# plt.show()
+plt.show()
 
 Document.write("-- Resultat du traitement des donnees --\n\n")
 
