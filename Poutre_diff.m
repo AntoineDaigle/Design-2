@@ -100,7 +100,7 @@ for n = 0:nt
     
     position_bout(n+1) = w(end);
     
-    set(h(2), "Ydata", w_new);
+    %set(h(2), "Ydata", w_new);
     drawnow
     %set(h2(1), "Ydata", position_bout);
     
