@@ -37,6 +37,7 @@ for _ in nb_de_set:
         position = r"Test capteur de position\Prise de mesure {}\F000{}CH1.CSV".format(_, _)
         df = pd.read_csv(position, index_col=False)
 
+    df["Tension"] = df["Tension"] / 1206.85
 
     ################## Sommets des données
 
@@ -115,20 +116,20 @@ for _ in nb_de_set:
 
 
     ###################### Génération du graphique
-    fig, (ax1, ax2, ax3) = plt.subplots(3)
-    plt.suptitle("Données brutes et traitement des données de l'essai: {}".format(_))
-    ax1.plot(df["Temps"], df["Tension"], label="Données brutes")
-    ax3.plot(new_tem, new_ten, label="Sommets")
-    ax3.plot(new_dataframe["Temps"], func(new_dataframe["Temps"], *param), label="Curve_fit")
-    ax3.scatter(freq_temps, freq_tensi, color="red", label=r"Sommets utilisés pour $\omega_0$")
-    ax2.plot(new_dataframe["Temps"], savgol_filter(new_dataframe["Tension"], 51, 2), label="Données filtrées")
-    ax1.legend()
-    ax2.legend()
-    ax3.legend()
-    ax1.set(ylabel='Signal [V]')
-    ax2.set(ylabel="Signal [V]")
-    ax3.set(ylabel="Signal [V]", xlabel="Temps [s]")
-    # plt.savefig("Oscillation de la lame", dpi=600)    # Pour sauvegarder la figure, don't uncomment this fucking line if you don't want to save 3489 figures
+    # fig, (ax1, ax2, ax3) = plt.subplots(3)
+    # plt.suptitle("Données brutes et traitement des données de l'essai: {}".format(_))
+    # ax1.plot(df["Temps"], df["Tension"], label="Données brutes")
+    # ax3.plot(new_tem, new_ten, label="Sommets")
+    # ax3.plot(new_dataframe["Temps"], func(new_dataframe["Temps"], *param), label="Curve_fit")
+    # ax3.scatter(freq_temps, freq_tensi, color="red", label=r"Sommets utilisés pour $\omega_0$")
+    # ax2.plot(new_dataframe["Temps"], savgol_filter(new_dataframe["Tension"], 51, 2), label="Données filtrées")
+    # ax1.legend()
+    # ax2.legend()
+    # ax3.legend()
+    # ax1.set(ylabel='Signal [V]')
+    # ax2.set(ylabel="Signal [V]")
+    # ax3.set(ylabel="Signal [V]", xlabel="Temps [s]")
+    # # plt.savefig("Oscillation de la lame", dpi=600)    # Pour sauvegarder la figure, don't uncomment this fucking line if you don't want to save 3489 figures
     # plt.show()
 
 fig, (ax1, ax2) = plt.subplots(2)

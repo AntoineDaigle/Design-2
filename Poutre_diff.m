@@ -48,7 +48,7 @@ F = zeros(1, nx);
 F(11) = -100e-3*9.81;
 % F(20) = -0.588;
 
-% w = 1 * fliplr(0.001*sin(pi*x/(2*L)));
+w = 1 * fliplr(0.001*sin(pi*x/(2*L)));
 
 %Initialisation des arrays d'état passé, présent et futur
 w_old = zeros(1, nx);
