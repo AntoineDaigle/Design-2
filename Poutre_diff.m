@@ -6,10 +6,10 @@ clc
 
 %Paramètres de la poutre
 b = 74e-3;
-h = 1.59e-3;
-l = 301e-3;
-L = 240e-3;
-m = 66e-3;
+h = 1.59e-3; %Hauteur
+l = 301e-3;  %On sen calisse... the fuck is he doing here?
+L = 240e-3;  %Longueur
+%m = 66e-3; %The fuck il sert a quoi Sam??
 densite = 1937.18;
 f = 12.17;
 
